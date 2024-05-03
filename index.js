@@ -1,10 +1,7 @@
 const fs = require('fs');
-const { default: inquirer } = require('inquirer');
-const inquirer = require(inquirer)
+const inquirer = require('inquirer')
 const fileName = './examples/newLogo.svg'
-const {circle, triangle, square} = require('./shapes');
-const { default: Choices } = require('inquirer/lib/objects/choices');
-const { error } = require('console');
+const {circle, triangle, square} = require('./lib/shapes');
 
 
 const questions = [
@@ -22,7 +19,7 @@ const questions = [
         type: 'list',
         message: 'Pick a shape for your design.',
         name: 'designShape',
-        Choices: ['circle','triangle','square']
+        choices: ['circle','triangle','square']
     },
     {
         type: 'input',
@@ -31,31 +28,33 @@ const questions = [
     }
 ];
 
-createLogo = (data) => {
+const createLogo = (data) => {
     const {text, textcolor, designShape, shapecolor} = data
 
     let svgContent; 
     switch (designShape) {
         case 'circle' :
-            svgContent = new circle(text, textcolor, shapecolor);
+            svgContent = new circle(text, textcolor, shapecolor).render();
             break;
         case 'triangle' : 
-            svgContent = new triangle(text, textcolor, shapecolor);
+            svgContent = new triangle(text, textcolor, shapecolor).render();
             break;
         case 'square' : 
-        svgContent = new square(text, textcolor, shapecolor);
-    };
+        svgContent = new square(text, textcolor, shapecolor).render();
+    }
+    return svgContent;
+};
 const writeToFile = (fileName, data) => {
     
-    fs.writeFile = (fileName, data, err) => {
+    fs.writeFile(fileName, data, (err) => {
         if (err) {
-            console.log('Error')
+            console.error('Error:', err);
         } else {
-            console.log('Success!')
+            console.log('Success!');
         }
-    }
-}
+    });
 };
+
 
 const init = () => {
     inquirer.prompt(questions)
@@ -68,5 +67,6 @@ const init = () => {
     }
 )
 };
+
 
  init();
