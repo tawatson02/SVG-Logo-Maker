@@ -1,7 +1,7 @@
 const fs = require('fs');
 const inquirer = require('inquirer')
 const fileName = './examples/newLogo.svg'
-const {circle, triangle, square} = require('./lib/shapes');
+const {circle, triangle, square, svg} = require('./lib/shapes');
 
 
 const questions = [
@@ -34,15 +34,16 @@ const createLogo = (data) => {
     let svgContent; 
     switch (designShape) {
         case 'circle' :
-            svgContent = new circle(text, textcolor, shapecolor).render();
+            svgContent = new circle( shapecolor);
             break;
         case 'triangle' : 
-            svgContent = new triangle(text, textcolor, shapecolor).render();
+            svgContent = new triangle( shapecolor);
             break;
         case 'square' : 
-        svgContent = new square(text, textcolor, shapecolor).render();
+        svgContent = new square( shapecolor);
     }
-    return svgContent;
+    const logoSVG = new svg(svgContent, textcolor,text ).render()
+    return logoSVG;
 };
 const writeToFile = (fileName, data) => {
     
